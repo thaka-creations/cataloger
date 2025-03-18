@@ -6,19 +6,6 @@ organization:
   name: Thaka Creator
 
 backend:
-  # Used for enabling authentication, secret is shared by all backend plugins
-  # See https://backstage.io/docs/auth/service-to-service-auth for
-  # information on the format
-  # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
-  auth:
-    environment: 'development'
-    providers:
-      guest: {}
-      github:
-        clientId: ${GITHUB_CLIENT_ID}
-        clientSecret: ${GITHUB_CLIENT_SECRET}
   baseUrl: http://localhost:7007
   listen:
     port: 7007
@@ -38,17 +25,6 @@ backend:
     client: better-sqlite3
     connection: ':memory:'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
-
-integrations:
-  github:
-    - host: github.com
-      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
-      # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
-      token: ${GITHUB_TOKEN}
-    ### Example for how to add your GitHub Enterprise instance using the API:
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -70,10 +46,19 @@ techdocs:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: 'development'
   providers:
-    # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+    github:
+      development:
+        clientId: Ov23lincfsWjdelbVgJn
+        clientSecret: 06292dc37de9bf38afb1d83c8bda5ee83618f1e8
+
+integrations:
+  github:
+    - host: github.com
+      token: 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
+
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options

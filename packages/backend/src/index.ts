@@ -8,6 +8,54 @@
 
 import { createBackend } from '@backstage/backend-defaults';
 
+import { createBackendModule } from '@backstage/backend-plugin-api';
+import { githubAuthenticator } from '@backstage/plugin-auth-backend-module-github-provider';
+import {
+  authProvidersExtensionPoint,
+  createOAuthProviderFactory,
+} from '@backstage/plugin-auth-node';
+
+const customAuth = createBackendModule({
+  // This ID must be exactly "auth" because that's the plugin it targets
+  pluginId: 'auth',
+  // This ID must be unique, but can be anything
+  moduleId: 'custom-auth-provider',
+  register(reg) {
+    reg.registerInit({
+      deps: { providers: authProvidersExtensionPoint },
+      async init({ providers }) {
+        providers.registerProvider({
+          // This ID must match the actual provider config, e.g. addressing
+          // auth.providers.github means that this must be "github".
+          providerId: 'github',
+          // Use createProxyAuthProviderFactory instead if it's one of the proxy
+          // based providers rather than an OAuth based one
+          factory: createOAuthProviderFactory({
+            authenticator: githubAuthenticator,
+            async signInResolver({ profile }, ctx) {
+              console.log(profile);
+              return {
+                token: '123',
+                identity: {
+                  type: 'user',
+                  userEntityRef: 'user:default/sandra',
+                  profile: {
+                    displayName: profile.displayName,
+                    email: 'nelfrankaj@gmail.com',
+                    picture: profile.picture,
+                  },
+                },
+              };
+              
+            },
+          }),
+        });
+      },
+    });
+  },
+});
+
+
 const backend = createBackend();
 
 backend.add(import('@backstage/plugin-app-backend'));
@@ -53,6 +101,6 @@ backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
 backend.add(import('@backstage/plugin-kubernetes-backend'));
 
 //github
-backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+backend.add(customAuth);
 
 backend.start();
