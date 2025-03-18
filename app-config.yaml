@@ -3,7 +3,7 @@ app:
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: Thaka Creator
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -12,6 +12,13 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
+  auth:
+    environment: 'development'
+    providers:
+      guest: {}
+      github:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
   baseUrl: http://localhost:7007
   listen:
     port: 7007
