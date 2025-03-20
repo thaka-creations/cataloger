@@ -6,6 +6,7 @@
  * Happy hacking!
  */
 
+require('dotenv').config();
 import { createBackend } from '@backstage/backend-defaults';
 import { stringifyEntityRef, DEFAULT_NAMESPACE } from '@backstage/catalog-model';
 import { createBackendModule } from '@backstage/backend-plugin-api';
