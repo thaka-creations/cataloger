@@ -53,6 +53,7 @@ auth:
       development:
         clientId: Ov23lincfsWjdelbVgJn
         clientSecret: 06292dc37de9bf38afb1d83c8bda5ee83618f1e8
+          
 
 integrations:
   github:
@@ -67,6 +68,15 @@ catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
+  # providers:
+  #   githubOrg:
+  #     id: production
+  #     githubUrl: https://github.com
+  #     orgs: ['organization-1', 'organization-2', 'organization-3']
+  #     schedule:
+  #       initialDelay: {seconds: 30}
+  #       frequency: {hours: 1}
+  #       timeout: {minutes: 50}
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
